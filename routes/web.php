@@ -11,6 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'ReceipeController@index');
+Route::get('php', 'HomeController@phpPage');
+Route::get('js', 'HomeController@jsPage');
+
