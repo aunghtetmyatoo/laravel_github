@@ -45,9 +45,8 @@ class ReceipeController extends Controller
     }
 
     
-    public function edit($id)
+    public function edit(Receipe $receipe)
     {
-        $receipe = Receipe::find($id);
         return view('edit', compact('receipe'));
     }
 
