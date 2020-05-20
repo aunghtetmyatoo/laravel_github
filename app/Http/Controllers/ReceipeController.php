@@ -4,19 +4,26 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Receipe;
+use App\Category;
 
 class ReceipeController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth')->except('index');
+    }
+
     public function index()
     {
-        $data = Receipe::all();
-        return view('home',compact('data'));
+        $receipe = Receipe::where('author_id', auth()->id())->get();
+        return view('home',compact('receipe'));
     }
 
     
     public function create()
     {
-        return view('create');
+        $category = Category::all();
+        return view('create', compact('category'));
     }
 
     
@@ -28,7 +35,7 @@ class ReceipeController extends Controller
             'category' => 'required',
         ]);
         
-        Receipe::create($validatedData);
+        Receipe::create($validatedData + ['author_id' => auth()->id()]);
         // Receipe::create([
         //     'name' => request()->name,
         //     'ingredients' => request()->ingredients,
@@ -41,18 +48,28 @@ class ReceipeController extends Controller
     
     public function show(Receipe $receipe)
     {
+        // if($receipe->author_id !== auth()->id())
+        // {
+        //     abort(403);
+        // }
+
+        $this->authorize('view', $receipe);
+
         return view('show',compact('receipe'));
     }
 
     
     public function edit(Receipe $receipe)
     {
-        return view('edit', compact('receipe'));
+        $this->authorize('view', $receipe);
+        $category = Category::all();
+        return view('edit', compact('receipe','category'));
     }
 
     
     public function update(Receipe $receipe)
     {
+        $this->authorize('view', $receipe);
         $validatedData = request()->validate([
             'name' => 'required',
             'ingredients' => 'required',
@@ -72,6 +89,7 @@ class ReceipeController extends Controller
     
     public function destroy(Receipe $receipe)
     {
+        $this->authorize('view', $receipe);
         $receipe->delete();
 
         return redirect('receipe');

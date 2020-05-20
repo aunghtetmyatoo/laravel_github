@@ -20,3 +20,7 @@ Route::resource('receipe', 'ReceipeController');
 // Route::post('receipe', 'ReceipeController@create');
 
 
+
+Auth::routes();
+
+// Route::get('/home', 'HomeController@index');
