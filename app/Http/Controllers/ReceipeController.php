@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\test;
 use App\Receipe;
 use App\Category;
+use App\Mail\ReceipeStored;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class ReceipeController extends Controller
 {
@@ -42,6 +45,8 @@ class ReceipeController extends Controller
         //     'category' => request()->category,
         // ]);
 
+        
+
         return redirect('receipe');
     }
 
@@ -52,6 +57,8 @@ class ReceipeController extends Controller
         // {
         //     abort(403);
         // }
+
+        // dd($test);
 
         $this->authorize('view', $receipe);
 

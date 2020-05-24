@@ -30,7 +30,7 @@ class ReceipePolicy
      */
     public function view(User $user, Receipe $receipe)
     {
-        return $receipe->author_id == auth()->id();
+        return $receipe->author_id == $user->id;
     }
 
     /**

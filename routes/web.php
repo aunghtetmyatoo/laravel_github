@@ -12,6 +12,11 @@
 */
 
 
+
+// Route::get('/', function() {
+//     dd(app('test'));
+// });
+
 Route::resource('receipe', 'ReceipeController');
 
 // Route::get('/', 'ReceipeController@index');
