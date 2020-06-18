@@ -3,21 +3,28 @@
 namespace App\Http\Controllers;
 
 use App\test;
+use App\User;
 use App\Receipe;
 use App\Category;
 use App\Mail\ReceipeStored;
 use Illuminate\Http\Request;
+use App\Events\ReceipeCreatedEvent;
 use Illuminate\Support\Facades\Mail;
+use App\Notifications\ReceipeStoredNotification;
 
 class ReceipeController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->except('index');
+        $this->middleware('auth');
     }
 
     public function index()
     {
+        // $user = User::find(1);
+        // $user->notify(new ReceipeStoredNotification());
+        // echo "sent notification";
+        // exit();
         $receipe = Receipe::where('author_id', auth()->id())->get();
         return view('home',compact('receipe'));
     }
@@ -38,14 +45,14 @@ class ReceipeController extends Controller
             'category' => 'required',
         ]);
         
-        Receipe::create($validatedData + ['author_id' => auth()->id()]);
+        $receipe = Receipe::create($validatedData + ['author_id' => auth()->id()]);
         // Receipe::create([
         //     'name' => request()->name,
         //     'ingredients' => request()->ingredients,
         //     'category' => request()->category,
         // ]);
 
-        
+        // event(new ReceipeCreatedEvent($receipe));
 
         return redirect('receipe');
     }

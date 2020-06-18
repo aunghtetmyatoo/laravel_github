@@ -24,6 +24,9 @@ Route::resource('receipe', 'ReceipeController');
 // Route::get('receipe/create', 'ReceipeController@createReceipe');
 // Route::post('receipe', 'ReceipeController@create');
 
+Route::get('/', 'PublicController@index');
+Route::get('show/{id}', 'PublicController@show');
+
 
 
 Auth::routes();
